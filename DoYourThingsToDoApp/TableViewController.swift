@@ -11,10 +11,14 @@ class TableViewController: UITableViewController {
     
     var itemArray = ["Play RDR2","Pay Bills","Do Homework"]
 
+    var userDefaults = UserDefaults.standard
     override func viewDidLoad() {
         super.viewDidLoad()
         print(itemArray)
         navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
+        if let items =  userDefaults.array(forKey: "toDo") as? [String] {
+            itemArray = items
+        }
     }
     
     @objc func addButton() {
@@ -30,8 +34,11 @@ class TableViewController: UITableViewController {
                 alert.addAction(action)
                 self.present(alert, animated: true)
             }else {
-                print(textField.text)
-                self.itemArray.append(textField.text!) // Yazılan planı Array'in icine ekler.
+              //  print(textField.text)
+                self.itemArray.append(textField.text!)
+                
+                self.userDefaults.set(self.itemArray, forKey: "toDo")
+                // Yazılan planı Array'in icine ekler.
                 self.tableView.reloadData()
             }
           
