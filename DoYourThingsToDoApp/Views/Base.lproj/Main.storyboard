@@ -7,7 +7,39 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Do Your Things-->
+        <!--Categorys-->
+        <scene sceneID="Ml9-lF-Ysq">
+            <objects>
+                <tableViewController id="pbl-Wd-JV9" customClass="CategoryViewController" customModule="DoYourThingsToDoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="cNM-SD-cZY">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="categoryCell" id="Hhd-lo-1Mh">
+                                <rect key="frame" x="0.0" y="50" width="390" height="43.666667938232422"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hhd-lo-1Mh" id="3w3-zw-05A">
+                                    <rect key="frame" x="0.0" y="0.0" width="390" height="43.666667938232422"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="pbl-Wd-JV9" id="nwE-aH-pZM"/>
+                            <outlet property="delegate" destination="pbl-Wd-JV9" id="Cpj-Mx-UAc"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Categorys" id="VNS-Lp-Vf1"/>
+                    <connections>
+                        <segue destination="3Sj-hb-ffX" kind="show" identifier="toSecondVC" id="GXF-aT-4OP"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZHA-Vp-gsK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="816" y="-14"/>
+        </scene>
+        <!--Plans-->
         <scene sceneID="SrQ-uh-2Kn">
             <objects>
                 <tableViewController id="3Sj-hb-ffX" customClass="TableViewController" customModule="DoYourThingsToDoApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -38,7 +70,7 @@
                             <outlet property="delegate" destination="3Sj-hb-ffX" id="R5N-Ht-juI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Do Your Things" id="o6n-5V-tbd"/>
+                    <navigationItem key="navigationItem" title="Plans" id="o6n-5V-tbd"/>
                     <connections>
                         <outlet property="searchBar" destination="KvJ-Li-nIY" id="Lke-nD-JLC"/>
                     </connections>
@@ -59,12 +91,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="3Sj-hb-ffX" kind="relationship" relationship="rootViewController" id="xuB-te-IDt"/>
+                        <segue destination="pbl-Wd-JV9" kind="relationship" relationship="rootViewController" id="1p5-ZU-4nx"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wy0-MF-cVm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="614.50381679389307" y="-18.30985915492958"/>
+            <point key="canvasLocation" x="74" y="-18"/>
         </scene>
     </scenes>
     <resources>
