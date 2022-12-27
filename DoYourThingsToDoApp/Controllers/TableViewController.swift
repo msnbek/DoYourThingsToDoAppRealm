@@ -14,14 +14,18 @@ class TableViewController: UITableViewController {
     
     
     var itemArray = [Plan]()
+    var selectedCategory : Category? {
+        didSet{
+            loadPlan()
+        }
+    }
    // let dataFilePath = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first?.appendingPathComponent("Plan.plist")
   //  var userDefaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchBar.delegate = self
-        loadPlan()
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
+     
+        
         
        // print(FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask))
        // print(dataFilePath)
@@ -47,11 +51,20 @@ class TableViewController: UITableViewController {
         
     }
     
-    func loadPlan() {
+    func loadPlan(predicate : NSPredicate? = nil) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         
         let request : NSFetchRequest<Plan> = Plan.fetchRequest()
+        let categoryPredicate = NSPredicate(format: "categorys.name MATCHES %@", selectedCategory!.name!)
+        
+       if let addtionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, addtionalPredicate])
+       }else {
+           request.predicate = categoryPredicate
+       }
+      //  let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate,predicate])
+      //  request.predicate = compoundPredicate
         do {
            itemArray =  try context.fetch(request)
         }catch {
@@ -64,8 +77,7 @@ class TableViewController: UITableViewController {
 
 //MARK: - Add Button
     
-    @objc func addButton() {
-        
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
         let alert = UIAlertController(title: "Add New Plan", message: "", preferredStyle: UIAlertController.Style.alert)
@@ -84,14 +96,16 @@ class TableViewController: UITableViewController {
                let newPlan = Plan(context: context)
                 newPlan.done = false
                 newPlan.title = textField.text!
+                newPlan.categorys = self.selectedCategory
                 self.itemArray.append(newPlan)
                 self.savePlan()
             
-              	
+                  
             }
           
         
         }
+        //Alert icinde textField olusturma.
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
             textField = alertTextField
@@ -101,8 +115,9 @@ class TableViewController: UITableViewController {
         self.present(alert, animated: true)
         
     }
-  
-}
+        
+    }
+   
 
     //MARK: - TableView
     extension TableViewController {
@@ -132,7 +147,7 @@ class TableViewController: UITableViewController {
             return cell
         }
         override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            tableView.deselectRow(at: indexPath, animated: true)
+         //   tableView.deselectRow(at: indexPath, animated: true)
             //  Asağıdaki if kontrolünü saglayan diger bir kod blok'u.
             // itemArray[indexPath.row].done = !itemArray[indexPath.row].done
       
@@ -175,15 +190,11 @@ extension TableViewController: UISearchBarDelegate {
         
         let request : NSFetchRequest<Plan> = Plan.fetchRequest()
         
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
      
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
   
-        do {
-            itemArray = try context.fetch(request)
-        }catch {
-            print("error \(error)")
-        }
+     loadPlan(predicate: predicate)
         self.tableView.reloadData()
     }
     

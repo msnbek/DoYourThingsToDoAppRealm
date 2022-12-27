@@ -70,7 +70,13 @@
                             <outlet property="delegate" destination="3Sj-hb-ffX" id="R5N-Ht-juI"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Plans" id="o6n-5V-tbd"/>
+                    <navigationItem key="navigationItem" title="Plans" id="o6n-5V-tbd">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="hGP-5W-TkS">
+                            <connections>
+                                <action selector="addButtonPressed:" destination="3Sj-hb-ffX" id="aHd-Cf-WDS"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="KvJ-Li-nIY" id="Lke-nD-JLC"/>
                     </connections>

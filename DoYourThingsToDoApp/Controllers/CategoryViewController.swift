@@ -17,6 +17,8 @@ class CategoryViewController: UITableViewController {
         navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.add, target: self, action: #selector(addButtonPressed))
     }
     
+    //MARK: - AddButton Func
+    
     @objc func addButtonPressed() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -35,6 +37,7 @@ class CategoryViewController: UITableViewController {
             }else {
                 let newCategory = Category(context: context)
                 newCategory.name = textField.text!
+                
                 self.categoryArray.append(newCategory)
                 self.saveCategory()
             }
@@ -52,7 +55,7 @@ class CategoryViewController: UITableViewController {
         
         
     }
-    
+    //MARK: - Save Func
     func saveCategory() {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -67,6 +70,8 @@ class CategoryViewController: UITableViewController {
         self.tableView.reloadData()
         
     }
+    
+//MARK: - Load Func
     
     func loadCategory() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -102,9 +107,28 @@ extension CategoryViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+       // tableView.deselectRow(at: indexPath, animated: true)
+        performSegue(withIdentifier: "toSecondVC", sender: self)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TableViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            
+            destinationVC.selectedCategory = categoryArray[indexPath.row]
+        }
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+            
+            context.delete(categoryArray[indexPath.row]) // CoreDatadan sildik.
+                           categoryArray.remove(at: indexPath.row)  // Array'den sildik.
+                           saveCategory()
+        }
+    }
     
     
 }
