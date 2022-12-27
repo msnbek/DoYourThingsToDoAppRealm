@@ -10,7 +10,8 @@ import CoreData
 
 class TableViewController: UITableViewController {
     
-
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     
     var itemArray = [Plan]()
    // let dataFilePath = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first?.appendingPathComponent("Plan.plist")
@@ -18,16 +19,12 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(itemArray)
-        
-        print(FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask))
-     
-       // print(dataFilePath)
-     loadPlan()
-      
+        searchBar.delegate = self
+        loadPlan()
         navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
         
-        
+       // print(FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask))
+       // print(dataFilePath)
     // if let items =  userDefaults.array(forKey: "toDo") as? [Plan] {
       //   itemArray = items
      // }
@@ -41,6 +38,7 @@ class TableViewController: UITableViewController {
         
         do {
             try context.save()
+
             print("saved")
         }catch {
           print("saving error")
@@ -63,15 +61,8 @@ class TableViewController: UITableViewController {
         
         
     }
-    
 
-    
-    
-    
-    
-  
-    
-//MARK: -
+//MARK: - Add Button
     
     @objc func addButton() {
         
@@ -96,8 +87,6 @@ class TableViewController: UITableViewController {
                 self.itemArray.append(newPlan)
                 self.savePlan()
             
-                
-                 
               	
             }
           
@@ -114,8 +103,6 @@ class TableViewController: UITableViewController {
     }
   
 }
-
-
 
     //MARK: - TableView
     extension TableViewController {
@@ -148,7 +135,7 @@ class TableViewController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             //  Asağıdaki if kontrolünü saglayan diger bir kod blok'u.
             // itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-          
+      
        savePlan()
             
             // Checkmark kaldırma ve koyma
@@ -159,15 +146,68 @@ class TableViewController: UITableViewController {
             }
             // Checkmark kaldırma ve koyma
             tableView.reloadData()
-            
-            
+         
             // Cell secildiginde saniyelik efekt koyma.
-           
-            
-            
+        
         }
         
+        override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+            if editingStyle == .delete {
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                
+                let context = appDelegate.persistentContainer.viewContext
+      
+                context.delete(itemArray[indexPath.row])
+                itemArray.remove(at: indexPath.row)
+                savePlan()
+            }
+        }
+
+        
     }
+//MARK: - SearchBar Methods
+extension TableViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let request : NSFetchRequest<Plan> = Plan.fetchRequest()
+        
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+     
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+  
+        do {
+            itemArray = try context.fetch(request)
+        }catch {
+            print("error \(error)")
+        }
+        self.tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            
+            let context = appDelegate.persistentContainer.viewContext
+            let request : NSFetchRequest<Plan> = Plan.fetchRequest()
+            do {
+                itemArray = try context.fetch(request)
+            }catch {
+                print("error \(error)")
+            }
+            self.tableView.reloadData()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+           
+        }
+    }
+    
+}
     
 
 
