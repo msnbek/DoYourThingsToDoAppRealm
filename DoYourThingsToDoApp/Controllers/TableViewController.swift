@@ -186,7 +186,7 @@ extension TableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
-        let context = appDelegate.persistentContainer.viewContext
+        let 	context = appDelegate.persistentContainer.viewContext
         
         let request : NSFetchRequest<Plan> = Plan.fetchRequest()
         
