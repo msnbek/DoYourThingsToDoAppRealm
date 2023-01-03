@@ -223,7 +223,7 @@ class TableViewController: UITableViewController {
             // Checkmark kaldırma ve koyma
            
          
-              tableView.deselectRow(at: indexPath, animated: true)   // Cell secildiginde saniyelik efekt koyma.
+            //  tableView.deselectRow(at: indexPath, animated: true)   // Cell secildiginde saniyelik efekt koyma.
         
         }
          
