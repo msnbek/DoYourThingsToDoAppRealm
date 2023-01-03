@@ -6,14 +6,17 @@
 //
 
 import UIKit
-import CoreData
-
+import RealmSwift
+import ChameleonFramework
 class TableViewController: UITableViewController {
     
+    let realm = try! Realm()
+     
+
     @IBOutlet weak var searchBar: UISearchBar!
     
     
-    var itemArray = [Plan]()
+    var toDoPlans : Results<Plan>?
     var selectedCategory : Category? {
         didSet{
             loadPlan()
@@ -24,54 +27,72 @@ class TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     
+        tableView.separatorStyle = .none
         
-        
+    
+    
        // print(FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask))
        // print(dataFilePath)
     // if let items =  userDefaults.array(forKey: "toDo") as? [Plan] {
-      //   itemArray = items
+      //   toDoPlans = items
      // }
     }
     
-    //MARK: - Save Plan Function
-    func savePlan() {
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
-        
-        do {
-            try context.save()
-
-            print("saved")
-        }catch {
-          print("saving error")
+    override func viewWillAppear(_ animated: Bool) {
+        if let colorHex =  selectedCategory?.color {
+            
+            if let nameTitle = selectedCategory?.name {
+                title = nameTitle
+            }
+          
+            guard let navBar = navigationController?.navigationBar else { fatalError("Navigation Controller Doesn't Exist.")}
+            navBar.backgroundColor = UIColor(hexString: colorHex)
+            if let navBarColour = UIColor(hexString: colorHex) {
+                navBar.barTintColor = navBarColour
+                navBar.tintColor = ContrastColorOf(navBarColour, returnFlat: true) // constrat.
+                searchBar.tintColor = navBarColour
+             
+                navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: ContrastColorOf(navBarColour, returnFlat: true)] // NAV TİTLE DEGİSTİRİR.
+            }
+            
         }
-        self.tableView.reloadData()
         
     }
     
-    func loadPlan(predicate : NSPredicate? = nil) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = appDelegate.persistentContainer.viewContext
+    func searchBarBackgroundColour() {
         
-        let request : NSFetchRequest<Plan> = Plan.fetchRequest()
-        let categoryPredicate = NSPredicate(format: "categorys.name MATCHES %@", selectedCategory!.name!)
-        
-       if let addtionalPredicate = predicate {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, addtionalPredicate])
-       }else {
-           request.predicate = categoryPredicate
-       }
-      //  let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate,predicate])
-      //  request.predicate = compoundPredicate
-        do {
-           itemArray =  try context.fetch(request)
-        }catch {
-            print("load error \(error)")
+        if let colour = UIColor(hexString: selectedCategory!.color) {
+            searchBar.backgroundImage = UIImage()
+            searchBar.tintColor = colour
+            searchBar.barTintColor = colour
         }
-     
         
+    }
+    
+    //MARK: - Save Plan Function
+    func savePlan(plan : Plan) {
+        
+        
+        
+        do {
+            try realm.write {
+                realm.add(plan)
+                
+            }
+            
+            
+        }catch {
+            print("saving error")
+            
+            self.tableView.reloadData()
+            
+        }
+    }
+    
+    func loadPlan() {
+        
+        toDoPlans = selectedCategory?.plans.sorted(byKeyPath: "title", ascending: true)
+        tableView.reloadData()
         
     }
 
@@ -90,17 +111,25 @@ class TableViewController: UITableViewController {
                 self.present(alert, animated: true)
             }else {
                 //  print(textField.text)
-                
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                let context = appDelegate.persistentContainer.viewContext
-               let newPlan = Plan(context: context)
-                newPlan.done = false
-                newPlan.title = textField.text!
-                newPlan.categorys = self.selectedCategory
-                self.itemArray.append(newPlan)
-                self.savePlan()
+                if let currentCategory = self.selectedCategory {
+                    do {
+                        try self.realm.write {
+                            let newPlan = Plan()
+                            newPlan.title = textField.text!
+                           
+                            newPlan.dateCreated = Date()
+                            currentCategory.plans.append(newPlan)
+                        }
+                    }catch {
+                        print("saving error \(error)")
+                    }
+        
+                }
             
-                  
+                self.tableView.reloadData()
+                
+            //    newPlan.done = false   Plan.swift dosyası içinde zaten tanımlandı
+        
             }
           
         
@@ -123,92 +152,117 @@ class TableViewController: UITableViewController {
     extension TableViewController {
         
         override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return itemArray.count
+            return toDoPlans?.count ?? 1
             
         }
         
         override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             
-            let plan = itemArray[indexPath.row]
-            cell.textLabel?.text = plan.title
+            if  let plan = toDoPlans?[indexPath.row] {
+                
+                cell.textLabel?.text = plan.title
+                let colour = UIColor(hexString: selectedCategory!.color)
+                if let color = colour?.darken(byPercentage: CGFloat(indexPath.row) / CGFloat(toDoPlans!.count)) {
+                    
+                    cell.backgroundColor = color
+                    cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+                }
+                
+                if plan.done == true {
+                    cell.accessoryType = .checkmark
+                }else {
+                    cell.accessoryType = .none
+                }
+            }else {
+                
+                cell.textLabel?.text = "No Plan Added."
+            }
+           
             
             
             //Ternany operator
             // value = condition ? valueIfTrue : valueIfFalse
             // cell.accessoryType = plan.done ? .checkmark : .none Aşağıdaki if kontrolünün aynısını yapar.
             
-            if plan.done == true {
-                cell.accessoryType = .checkmark
-            }else {
-                cell.accessoryType = .none
-            }
+          
             
             return cell
         }
-        override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         //   tableView.deselectRow(at: indexPath, animated: true)
+        
+        
+       override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+           if let item = toDoPlans?[indexPath.row] {
+               do {
+                   try realm.write {
+                       item.done = !item.done // checkmark koyma islemi.
+                   }
+               }catch {
+                   print("checkmark error \(error)")
+               }
+           }
+           tableView.reloadData()
+           
+           
+          
+           
+           
             //  Asağıdaki if kontrolünü saglayan diger bir kod blok'u.
-            // itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+            // toDoPlans[indexPath.row].done = !toDoPlans[indexPath.row].done
       
-       savePlan()
-            
+     
             // Checkmark kaldırma ve koyma
-            if itemArray[indexPath.row].done == false {
-                itemArray[indexPath.row].done = true
+           /*
+            if toDoPlans?[indexPath.row].done == false {
+                toDoPlans?[indexPath.row].done = true
             }else {
-                itemArray[indexPath.row].done = false
+                toDoPlans?[indexPath.row].done = false
             }
+            */
             // Checkmark kaldırma ve koyma
-            tableView.reloadData()
+           
          
-            // Cell secildiginde saniyelik efekt koyma.
+              tableView.deselectRow(at: indexPath, animated: true)   // Cell secildiginde saniyelik efekt koyma.
         
         }
+         
+         
         
         override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
             if editingStyle == .delete {
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                
-                let context = appDelegate.persistentContainer.viewContext
-      
-                context.delete(itemArray[indexPath.row])
-                itemArray.remove(at: indexPath.row)
-                savePlan()
+            
+                if let deletingRow = toDoPlans?[indexPath.row] {
+                    do {
+                        try realm.write {
+                            realm.delete(deletingRow)
+                        }
+                        }catch {
+                            print("deleting error \(error)")
+                    }
+                }
+                self.tableView.reloadData()
+               
             }
         }
 
         
     }
 //MARK: - SearchBar Methods
+
+
 extension TableViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        let 	context = appDelegate.persistentContainer.viewContext
-        
-        let request : NSFetchRequest<Plan> = Plan.fetchRequest()
-        
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-     
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        toDoPlans = toDoPlans?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
   
-     loadPlan(predicate: predicate)
+    
         self.tableView.reloadData()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            
-            let context = appDelegate.persistentContainer.viewContext
-            let request : NSFetchRequest<Plan> = Plan.fetchRequest()
-            do {
-                itemArray = try context.fetch(request)
-            }catch {
-                print("error \(error)")
-            }
+            loadPlan()
             self.tableView.reloadData()
             
             DispatchQueue.main.async {

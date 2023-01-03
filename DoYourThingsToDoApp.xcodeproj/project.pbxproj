@@ -7,17 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		963BD759B98682D516E439D9 /* Pods_DoYourThingsToDoApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39043CA0C49A24E036C04BDB /* Pods_DoYourThingsToDoApp.framework */; };
 		ED0923B82959BEF300E0D84B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0923B72959BEF300E0D84B /* AppDelegate.swift */; };
 		ED0923BA2959BEF300E0D84B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0923B92959BEF300E0D84B /* SceneDelegate.swift */; };
 		ED0923BC2959BEF300E0D84B /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0923BB2959BEF300E0D84B /* TableViewController.swift */; };
 		ED0923BF2959BEF300E0D84B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0923BD2959BEF300E0D84B /* Main.storyboard */; };
 		ED0923C12959BEF500E0D84B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED0923C02959BEF500E0D84B /* Assets.xcassets */; };
 		ED0923C42959BEF500E0D84B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED0923C22959BEF500E0D84B /* LaunchScreen.storyboard */; };
-		ED586798295A19EF009AE8D4 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = ED586796295A19EE009AE8D4 /* DataModel.xcdatamodeld */; };
+		ED0ADE2E295DD1AB00B99E40 /* Plan.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0ADE2D295DD1AB00B99E40 /* Plan.swift */; };
+		ED0ADE30295DD1B500B99E40 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0ADE2F295DD1B500B99E40 /* Category.swift */; };
 		EDA50C3E295B8CF200094E1D /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA50C3D295B8CF200094E1D /* CategoryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		39043CA0C49A24E036C04BDB /* Pods_DoYourThingsToDoApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoYourThingsToDoApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		94CB84826955DFE3D789F58F /* Pods-DoYourThingsToDoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoYourThingsToDoApp.release.xcconfig"; path = "Target Support Files/Pods-DoYourThingsToDoApp/Pods-DoYourThingsToDoApp.release.xcconfig"; sourceTree = "<group>"; };
+		B0E46A582C89331CF3C91F77 /* Pods-DoYourThingsToDoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoYourThingsToDoApp.debug.xcconfig"; path = "Target Support Files/Pods-DoYourThingsToDoApp/Pods-DoYourThingsToDoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		ED0923B42959BEF300E0D84B /* DoYourThingsToDoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoYourThingsToDoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED0923B72959BEF300E0D84B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED0923B92959BEF300E0D84B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -26,7 +31,8 @@
 		ED0923C02959BEF500E0D84B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED0923C32959BEF500E0D84B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED0923C52959BEF500E0D84B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ED586797295A19EF009AE8D4 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		ED0ADE2D295DD1AB00B99E40 /* Plan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plan.swift; sourceTree = "<group>"; };
+		ED0ADE2F295DD1B500B99E40 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		EDA50C3D295B8CF200094E1D /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -35,17 +41,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				963BD759B98682D516E439D9 /* Pods_DoYourThingsToDoApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E359B56AA1E859403B84CECA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				39043CA0C49A24E036C04BDB /* Pods_DoYourThingsToDoApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		ED0923AB2959BEF300E0D84B = {
 			isa = PBXGroup;
 			children = (
 				ED0923B62959BEF300E0D84B /* DoYourThingsToDoApp */,
 				ED0923B52959BEF300E0D84B /* Products */,
+				F9964EF9A60FB61A95FBE650 /* Pods */,
+				E359B56AA1E859403B84CECA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,7 +89,8 @@
 		ED0923CD2959E27400E0D84B /* Data Model */ = {
 			isa = PBXGroup;
 			children = (
-				ED586796295A19EE009AE8D4 /* DataModel.xcdatamodeld */,
+				ED0ADE2F295DD1B500B99E40 /* Category.swift */,
+				ED0ADE2D295DD1AB00B99E40 /* Plan.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -105,6 +123,15 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		F9964EF9A60FB61A95FBE650 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B0E46A582C89331CF3C91F77 /* Pods-DoYourThingsToDoApp.debug.xcconfig */,
+				94CB84826955DFE3D789F58F /* Pods-DoYourThingsToDoApp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,9 +139,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ED0923C82959BEF500E0D84B /* Build configuration list for PBXNativeTarget "DoYourThingsToDoApp" */;
 			buildPhases = (
+				85F822C2A24010BA63F6DBFE /* [CP] Check Pods Manifest.lock */,
 				ED0923B02959BEF300E0D84B /* Sources */,
 				ED0923B12959BEF300E0D84B /* Frameworks */,
 				ED0923B22959BEF300E0D84B /* Resources */,
+				81D0A7FB6F8B29171742E640 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -171,16 +200,59 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		81D0A7FB6F8B29171742E640 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DoYourThingsToDoApp/Pods-DoYourThingsToDoApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DoYourThingsToDoApp/Pods-DoYourThingsToDoApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoYourThingsToDoApp/Pods-DoYourThingsToDoApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		85F822C2A24010BA63F6DBFE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DoYourThingsToDoApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		ED0923B02959BEF300E0D84B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				EDA50C3E295B8CF200094E1D /* CategoryViewController.swift in Sources */,
-				ED586798295A19EF009AE8D4 /* DataModel.xcdatamodeld in Sources */,
+				ED0ADE2E295DD1AB00B99E40 /* Plan.swift in Sources */,
 				ED0923BC2959BEF300E0D84B /* TableViewController.swift in Sources */,
 				ED0923B82959BEF300E0D84B /* AppDelegate.swift in Sources */,
 				ED0923BA2959BEF300E0D84B /* SceneDelegate.swift in Sources */,
+				ED0ADE30295DD1B500B99E40 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +394,7 @@
 		};
 		ED0923C92959BEF500E0D84B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0E46A582C89331CF3C91F77 /* Pods-DoYourThingsToDoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -350,6 +423,7 @@
 		};
 		ED0923CA2959BEF500E0D84B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94CB84826955DFE3D789F58F /* Pods-DoYourThingsToDoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -398,19 +472,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		ED586796295A19EE009AE8D4 /* DataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				ED586797295A19EF009AE8D4 /* DataModel.xcdatamodel */,
-			);
-			currentVersion = ED586797295A19EF009AE8D4 /* DataModel.xcdatamodel */;
-			path = DataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = ED0923AC2959BEF300E0D84B /* Project object */;
 }
