@@ -5,3 +5,4 @@
 # DoYourThingsTodoAppRealm
 # DoYourThingsTodoAppRealm
 # DoYourThingsToDoAppRealm
+# DoYourThingsToDoAppCoreData
